@@ -1,17 +1,26 @@
 const Cars = require("../models/carsModel");
+const imagekit = require("../lib/imagekit");
 
 const createNewCar = async (req, res) => {
+  const { name, price, category } = req.body;
+  const file = req.file;
+  
   try {
+    const split = file.originalname.split(".");
+    const extension = split[split.length - 1];
 
-    const { name, price, category } = req.body;
-    const image = req.file.filename;
+    const img = await imagekit.upload({
+      file: file.buffer,
+      fileName: `IMG-${Date.now()}.${extension}`,
+    });
 
     const car = new Cars({
       name,
       price,
       category,
-      image
+      image: img.url
     });
+    
     await car.save();
     req.flash("message", "Created");
     res.redirect("/");

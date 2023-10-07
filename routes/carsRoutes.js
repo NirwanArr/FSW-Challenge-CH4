@@ -3,7 +3,7 @@ const router = express.Router();
 
 const carsContoller = require("../controllers/carsController");
 const pageController = require("../controllers/pageController");
-const uploadFile = require("../middlewares/uploadFile");
+const upload = require("../middlewares/uploader");
 
 router
   .route("/")
@@ -17,10 +17,10 @@ router
 
 router
   .route("/upload")
-  .post(uploadFile.single("image"), carsContoller.createNewCar);
+  .post(upload.single("image"), carsContoller.createNewCar);
 router
   .route("/update/:id")
-  .post(uploadFile.single("image"), carsContoller.editCars);
+  .post(upload.single("image"), carsContoller.editCars);
 router
   .route("/delete/:id")
   .get(carsContoller.removeCar);
